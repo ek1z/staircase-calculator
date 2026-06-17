@@ -44,10 +44,16 @@ ei asetuksen numeroarvo. Tarkista aina paikallisen rakennusvalvonnan tulkinta.
 
 ## Kehitys
 
+Projekti käyttää **pnpm**-pakettienhallintaa (versio kiinnitetty `package.json`:n
+`packageManager`-kenttään, otetaan käyttöön Corepackilla) ja on kirjoitettu
+**TypeScriptillä** (React + Vite).
+
 ```bash
-pnpm install   # tai npm install
-pnpm dev       # vite-kehityspalvelin
-pnpm build     # tuotantokäännös dist/-kansioon
+corepack enable   # ottaa pinnatun pnpm-version käyttöön
+pnpm install      # asentaa riippuvuudet
+pnpm dev          # vite-kehityspalvelin
+pnpm build        # tyyppitarkistus (tsc) + tuotantokäännös dist/-kansioon
+pnpm typecheck    # pelkkä tyyppitarkistus
 ```
 
 ## Huomiot
