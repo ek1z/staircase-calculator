@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Portaiden askelluslaskuri – YM 1007/2017 mukainen mitoitus reisilankun huomioiden",
+  "description": "Interactive sizing tool for straight-flight staircases: computes step count, rise and going from floor-to-floor height and run, checks them against Finnish building-code limits (YM 1007/2017), and draws a live dimensioned section with the stringboard.",
   "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "vite",

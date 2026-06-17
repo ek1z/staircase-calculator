@@ -1,63 +1,67 @@
-# Portaiden askelluslaskuri
+# Staircase Calculator
 
-Interaktiivinen suoran syöksyportaan mitoitustyökalu. Annat kerroskorkeuden,
-käytettävissä olevan lattiapituuden ja reisilankun leveyden, ja työkalu laskee
-askelmamäärän, nousun ja etenemän sekä tarkistaa täyttyvätkö rakentamismääräykset.
+An interactive sizing tool for straight-flight staircases (Finnish: *Portaiden askelluslaskuri*).
+Enter the floor-to-floor height, the available horizontal run, and the stringboard
+width, and the tool computes the number of steps, the rise and the going, and checks
+them against the building-code limits.
 
-Reaaliaikainen arkkitehtileikkaus piirtyy syötteiden mukaan, reisilankku mukaan lukien.
+A live architectural section is drawn from the inputs, including the stringboard.
 
-## Ominaisuudet
+## Features
 
-- Nousun ja etenemän laskenta valitulle askelmamäärälle (säädettävissä).
-- Suositus, joka osuu lähimmäs mukavuussääntöä `2 × nousu + etenemä ≈ 600–630 mm`.
-- Määräystenmukaisuuden tarkistus porrastyypeittäin (YM 1007/2017 raja-arvot).
-- Reisilankun geometria: kaltevuuskulma, pystykorkeus, alareunan korkeus yläpäässä
-  ja vähimmäisleveys askelman kiinnitykseen.
-- Live SVG-leikkaus mittaviivoilla.
+- Rise and going computed for the chosen number of steps (adjustable).
+- A recommendation that lands closest to the comfort rule `2 × rise + going ≈ 600–630 mm`.
+- Code-compliance check per stair type (limits from Finnish decree YM 1007/2017).
+- Stringboard geometry: pitch angle, vertical (plumb-cut) height, height of the lower
+  edge at the top end, and the minimum width needed to seat a step.
+- Live SVG section with dimension lines.
+- The full input set lives in the URL query string, so any configuration can be
+  bookmarked or shared by copying the link.
 
-## Mitoitusperusteet
+## Sizing basis
 
-Raja-arvot perustuvat ympäristöministeriön asetukseen rakennuksen
-käyttöturvallisuudesta (1007/2017). Sovelletut nousun maksimit / etenemän minimit (mm):
+The limits come from the Finnish Ministry of the Environment decree on the safety of
+use of buildings (YM 1007/2017). Applied maximum rise / minimum going (mm):
 
-| Porrastyyppi | nousu ≤ | etenemä ≥ |
+| Stair type | rise ≤ | going ≥ |
 |---|---|---|
-| Asuinhuoneiston / majoitustilan sisäporras | 190 | 250 |
-| Muiden varsinaisten käyttötilojen sisäporras | 180 | 270 |
-| Varatie / parvi- tai ullakkoporras | 220 | 220 |
-| Hallinto-, palvelu- ja liiketilat, kokoontumistilat | 160 | 300 |
-| Uloskäytävä | 180 | 270 |
-| Katettu / lämmitetty ulkoporras | 160 | 300 |
-| Kattamaton / lämmittämätön ulkoporras | 130 | 390 |
+| Interior stair of a dwelling / accommodation unit | 190 | 250 |
+| Interior stair of other primary-use spaces | 180 | 270 |
+| Escape / loft or attic stair (not serving living spaces) | 220 | 220 |
+| Administrative, service and retail spaces, assembly spaces | 160 | 300 |
+| Exit / egress stair | 180 | 270 |
+| Covered or heated exterior stair | 160 | 300 |
+| Uncovered, unheated exterior stair | 130 | 390 |
 
-Mukavuussääntö `2 × nousu + etenemä ≈ 600–630 mm` on vakiintunut suunnitteluohje,
-ei asetuksen numeroarvo. Tarkista aina paikallisen rakennusvalvonnan tulkinta.
+The comfort rule `2 × rise + going ≈ 600–630 mm` is an established design guideline,
+not a numeric value from the decree. Always confirm the interpretation with your local
+building authority.
 
-### Kaavat
+### Formulas
 
-- nousu `= H / n` (n = nousujen lukumäärä)
-- etenemä `= L / (n − 1)`
-- kaltevuuskulma (nousulinjaa pitkin) `θ = atan(nousu / etenemä)`
-- reisilankun pystykorkeus (pystysahattu yläpääty) `= W / cos θ`
-- lankun alareunan korkeus alatasosta yläpäässä `= H − W / cos θ`
-- askelman vaatima lankun vähimmäisleveys `= (nousu · etenemä) / √(nousu² + etenemä²)`
+- rise `= H / n` (n = number of risers)
+- going `= L / (n − 1)`
+- pitch angle (along the nosing line) `θ = atan(rise / going)`
+- stringboard vertical height (plumb-cut top end) `= W / cos θ`
+- height of the board's lower edge above the lower floor at the top end `= H − W / cos θ`
+- minimum board width to seat a step `= (rise · going) / √(rise² + going²)`
 
-## Kehitys
+## Development
 
-Projekti käyttää **pnpm**-pakettienhallintaa (versio kiinnitetty `package.json`:n
-`packageManager`-kenttään, otetaan käyttöön Corepackilla) ja on kirjoitettu
-**TypeScriptillä** (React + Vite).
+The project uses the **pnpm** package manager (the version is pinned in the
+`packageManager` field of `package.json` and enabled via Corepack) and is written in
+**TypeScript** (React + Vite).
 
 ```bash
-corepack enable   # ottaa pinnatun pnpm-version käyttöön
-pnpm install      # asentaa riippuvuudet
-pnpm dev          # vite-kehityspalvelin
-pnpm build        # tyyppitarkistus (tsc) + tuotantokäännös dist/-kansioon
-pnpm typecheck    # pelkkä tyyppitarkistus
+corepack enable   # enable the pinned pnpm version
+pnpm install      # install dependencies
+pnpm dev          # Vite dev server
+pnpm build        # type-check (tsc) + production build to dist/
+pnpm typecheck    # type-check only
 ```
 
-## Huomiot
+## Notes
 
-Laskuri olettaa suoran syöksyn. Kiertävässä portaassa etenemä mitataan
-kulkulinjalta ja sisäreunalla on omat vähimmäismittansa. Reisilankun yläpääty
-oletetaan pystysahatuksi.
+The calculator assumes a straight flight. On a winding stair the going is measured
+along the walking line and the inner edge has its own minimum dimensions. The
+stringboard's top end is assumed to be plumb-cut.
