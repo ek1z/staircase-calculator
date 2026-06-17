@@ -21,7 +21,7 @@ export default function PortaslaskuriApp() {
 
   const r = computeFor(n, H, L);
   const { riseOk, goingOk, comfortOk, tooMany, allOk } = evaluateCompliance(r, type);
-  const { thetaDeg: theta, vt, bottomEdgeTop, minBoard, boardOk } = boardGeometry(H, L, W, r);
+  const { thetaDeg: theta, vt, bottomEdgeTop, minBoard, boardOk } = boardGeometry(H, W, r);
 
   const verdict = allOk
     ? comfortOk ? { c: C.pass, t: "Täyttää määräykset" } : { c: C.warn, t: "Täyttää raja-arvot — mukavuus rajalla" }

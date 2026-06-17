@@ -50,9 +50,9 @@ export function recommend(H: number, L: number, type: StairType): number {
 
 // ── Reisilankun geometria ─────────────────────────────────────────────────
 export type BoardGeometry = {
-  /** Portaan kaltevuuskulma radiaaneina. */
+  /** Portaan kaltevuuskulma (nousulinjaa pitkin) radiaaneina. */
   thetaRad: number;
-  /** Portaan kaltevuuskulma asteina. */
+  /** Portaan kaltevuuskulma (nousulinjaa pitkin) asteina. */
   thetaDeg: number;
   /** Lankun pystykorkeus (pystysahattu yläpääty), mm. */
   vt: number;
@@ -64,8 +64,9 @@ export type BoardGeometry = {
   boardOk: boolean;
 };
 
-export function boardGeometry(H: number, L: number, W: number, dims: StairDimensions): BoardGeometry {
-  const thetaRad = Math.atan2(H, L);
+export function boardGeometry(H: number, W: number, dims: StairDimensions): BoardGeometry {
+  // Kaltevuus mitataan nousulinjaa (askelmien nokkia) pitkin, ei lattiadiagonaalia.
+  const thetaRad = Math.atan2(dims.rise, dims.going);
   const thetaDeg = (thetaRad * 180) / Math.PI;
   const vt = W / Math.cos(thetaRad);
   const bottomEdgeTop = H - vt;
