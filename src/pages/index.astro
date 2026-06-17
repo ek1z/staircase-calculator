@@ -1,0 +1,14 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PortaslaskuriApp from "../PortaslaskuriApp";
+---
+
+<Layout>
+  <!--
+    Laskuri renderöidään kokonaan selaimessa (client:only): sovellus lukee
+    tilansa URL-osoitteesta (useUrlState), joten palvelinpuolen esirenderöinti
+    aiheuttaisi hydraatioristiriidan. SEO hoituu staattisesta <head>-metasta
+    ja JSON-LD:stä.
+  -->
+  <PortaslaskuriApp client:only="react" />
+</Layout>

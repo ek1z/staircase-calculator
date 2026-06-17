@@ -1,5 +1,15 @@
 import { useMemo } from "react";
 import * as stylex from "@stylexjs/stylex";
+// Tuodaan globaali resetti islandin (client) build-graafiin, jotta StyleX
+// liittää käännetyt tyylinsä tähän CSS-assettiin ja Astro linkittää sen.
+import "./index.css";
+
+// Kehityksessä StyleX tarjoaa tyylit virtuaalimoduulin kautta (CSS + HMR).
+// Tuotannossa tyylit liitetään index.css-assettiin buildin aikana. Lataus
+// tehdään vain selaimessa, jotta Astron palvelinrenderöinti ei kaadu.
+if (import.meta.env.DEV && typeof document !== "undefined") {
+  import("virtual:stylex:runtime");
+}
 import { TYPES, STEP_MIN, STEP_MAX, MAX_RISERS_NO_LANDING } from "./config/stairTypes";
 import { computeFor, recommend, boardGeometry, evaluateCompliance } from "./lib/geometry";
 import { colors, fonts } from "./tokens.stylex";
