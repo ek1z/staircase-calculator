@@ -5,9 +5,10 @@ type StairSectionProps = { H: number; L: number; n: number; W: number };
 
 export function StairSection({ H, L, n, W }: StairSectionProps) {
   const { rise, going, risers, treads } = computeFor(n, H, L);
-  const theta = Math.atan2(H, L);
+  const theta = Math.atan2(rise, going);     // portaan kaltevuus nousulinjaa (askelmien nokkia) pitkin
   const vt = W / Math.cos(theta);            // lankun pystykorkeus (pystypäätysahaus)
-  const boardBottom = H + vt;
+  const noseEndY = treads * rise;            // nousulinjan taso alapäässä (alimman askelman nokka)
+  const boardBottom = noseEndY + vt;
   const bottomEdgeTop = H - vt;              // lankun alareunan korkeus alatasosta yläpäässä
 
   const mL = Math.max(440, H * 0.2), mT = H * 0.1, mR = L * 0.06;
@@ -27,7 +28,7 @@ export function StairSection({ H, L, n, W }: StairSectionProps) {
   return (
     <svg viewBox={`${-mL} ${-mT} ${vbW} ${vbH}`} style={{ width: "100%", height: "auto", display: "block" }} preserveAspectRatio="xMidYMid meet">
       {/* reisilankku, pystysahatut päädyt */}
-      <polygon points={`0,0 ${L},${H} ${L},${boardBottom} 0,${vt}`} fill={C.boardFill} stroke={C.board} strokeWidth={sw} />
+      <polygon points={`0,0 ${L},${noseEndY} ${L},${boardBottom} 0,${vt}`} fill={C.boardFill} stroke={C.board} strokeWidth={sw} />
       {/* tasot */}
       <line x1={xa - tick} y1={0} x2={0} y2={0} stroke={C.ink} strokeWidth={sw} />
       <line x1={L} y1={H} x2={L + mR} y2={H} stroke={C.ink} strokeWidth={sw} />
@@ -53,7 +54,7 @@ export function StairSection({ H, L, n, W }: StairSectionProps) {
 
       {/* reisilankun leveys (kohtisuora) */}
       {(() => {
-        const mx = L * 0.62, my = H * 0.62;
+        const mx = L * 0.62, my = mx * (rise / going);
         return (
           <g stroke={C.board} strokeWidth={sw} fill={C.board} fontFamily={MONO} fontSize={fs * 0.85}>
             <line x1={mx} y1={my} x2={mx + perpx} y2={my + perpy} />

@@ -37,7 +37,7 @@ ei asetuksen numeroarvo. Tarkista aina paikallisen rakennusvalvonnan tulkinta.
 
 - nousu `= H / n` (n = nousujen lukumäärä)
 - etenemä `= L / (n − 1)`
-- kaltevuuskulma `θ = atan(H / L)`
+- kaltevuuskulma (nousulinjaa pitkin) `θ = atan(nousu / etenemä)`
 - reisilankun pystykorkeus (pystysahattu yläpääty) `= W / cos θ`
 - lankun alareunan korkeus alatasosta yläpäässä `= H − W / cos θ`
 - askelman vaatima lankun vähimmäisleveys `= (nousu · etenemä) / √(nousu² + etenemä²)`
