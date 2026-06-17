@@ -1,0 +1,13 @@
+/* Globaali resetti. Tämä luo Vitelle CSS-assetin, johon StyleX liittää
+   käännetyt tyylinsä tuotantobuildissa (auto-linkitetty <link>). StyleX ei
+   käsittele globaaleja `*`-valitsimia, joten resetti pidetään tässä. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#root {
+  height: 100%;
+}

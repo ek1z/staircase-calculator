@@ -1,4 +1,5 @@
 import { useMemo, useSyncExternalStore } from "react";
+import type { ThemeName } from "./themes";
 
 // ── URL-pohjainen tila ────────────────────────────────────────────────────
 // Hakustring (?h=…&l=…) toimii sovelluksen ainoana totuudenlähteenä: arvot
@@ -29,6 +30,14 @@ function num(value: string | null, fallback: number) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+// Teeman oletus: käyttöjärjestelmän asetus, ellei URL pakota arvoa.
+function systemTheme(): ThemeName {
+  return typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
 // Lukee nykyiset parametrit tuoreeltaan, yhdistää muutoksen ja kirjoittaa URL:iin.
 // null/undefined poistaa avaimen (palautuu oletukseen).
 function update(patch: Patch) {
@@ -49,6 +58,7 @@ export function useStairParams() {
     const p = new URLSearchParams(search);
     const nRaw = p.get("n");
     const nVal = num(nRaw, NaN);
+    const themeRaw = p.get("theme");
     return {
       H: num(p.get("h"), DEFAULTS.H),
       L: num(p.get("l"), DEFAULTS.L),
@@ -56,6 +66,7 @@ export function useStairParams() {
       typeId: p.get("t") ?? DEFAULTS.typeId,
       // nOverride on määritelty vain kun käyttäjä on asettanut nousumäärän käsin.
       nOverride: nRaw != null && Number.isFinite(nVal) ? Math.max(2, nVal) : undefined,
+      theme: (themeRaw === "dark" || themeRaw === "light" ? themeRaw : systemTheme()) as ThemeName,
       update,
     };
   }, [search]);
