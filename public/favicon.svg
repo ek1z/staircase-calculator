@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Portaiden askelluslaskuri">
+  <rect width="64" height="64" rx="10" fill="#16263F"/>
+  <!-- Staircase section: stringboard line + steps -->
+  <g fill="none" stroke="#F7F5EF" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+    <polyline points="10,52 10,42 22,42 22,32 34,32 34,22 46,22 46,12 54,12"/>
+  </g>
+  <!-- Stringboard (reisilankku) accent -->
+  <polyline points="10,56 54,16" fill="none" stroke="#B07A3C" stroke-width="3" stroke-linecap="round"/>
+</svg>

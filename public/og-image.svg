@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Portaiden askelluslaskuri – nousu, etenemä ja YM 1007/2017 -tarkistus">
+  <defs>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="rgba(22,38,63,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#F7F5EF"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Eyebrow -->
+  <text x="80" y="120" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="24" letter-spacing="6" fill="#5B6B82">YM 1007/2017 · SISÄPORTAIDEN MITOITUS</text>
+
+  <!-- Title -->
+  <text x="80" y="210" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="76" font-weight="800" fill="#16263F">Portaiden askelluslaskuri</text>
+
+  <!-- Subtitle -->
+  <text x="80" y="270" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" fill="#5B6B82">Nousu, etenemä ja askelmien määrä · mitoitettu leikkaus reisilankusta</text>
+
+  <!-- Architectural staircase section -->
+  <g transform="translate(80,330)">
+    <!-- steps -->
+    <polyline points="0,250 0,210 80,210 80,160 160,160 160,110 240,110 240,60 320,60 320,10 380,10"
+      fill="none" stroke="#16263F" stroke-width="6" stroke-linejoin="miter" stroke-linecap="square"/>
+    <!-- stringboard -->
+    <polyline points="0,275 380,35" fill="none" stroke="#B07A3C" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <!-- Result chips -->
+  <g font-family="ui-monospace, Menlo, Consolas, monospace" font-size="26" fill="#16263F">
+    <rect x="600" y="360" width="240" height="70" fill="#FFFFFF" stroke="#16263F" stroke-width="3"/>
+    <text x="620" y="392" font-size="18" fill="#5B6B82">NOUSU</text>
+    <text x="620" y="420">≤ 190 mm</text>
+
+    <rect x="860" y="360" width="240" height="70" fill="#FFFFFF" stroke="#16263F" stroke-width="3"/>
+    <text x="880" y="392" font-size="18" fill="#5B6B82">ETENEMÄ</text>
+    <text x="880" y="420">≥ 250 mm</text>
+
+    <rect x="600" y="450" width="500" height="70" fill="#FFFFFF" stroke="#2E7D52" stroke-width="3"/>
+    <circle cx="640" cy="485" r="10" fill="#2E7D52"/>
+    <text x="664" y="494" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="26" fill="#2E7D52">2·nousu + etenemä ≈ 600–660 mm</text>
+  </g>
+</svg>
