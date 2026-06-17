@@ -1,7 +1,16 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
+import type { CSSProperties } from "react";
 
 // ── Porrastyypit ja niiden raja-arvot (YM asetus 1007/2017) ───────────────
-const TYPES = [
+type StairType = {
+  id: string;
+  label: string;
+  rise: number;
+  go: number;
+  note: string;
+};
+
+const TYPES: StairType[] = [
   { id: "asunto", label: "Asuinhuoneiston / majoitustilan sisäporras", rise: 190, go: 250, note: "Tavallisin kotiporras kerrosten välillä." },
   { id: "kayttotila", label: "Muiden varsinaisten käyttötilojen sisäporras", rise: 180, go: 270, note: "Esim. teollisuus- ja työtilat ilman asiakasliikennettä." },
   { id: "parvi", label: "Varatie / parvi- tai ullakkoporras (asumista palvelematon)", rise: 220, go: 220, note: "Asunnossa muihin kuin asumista palveleviin välttämättömiin tiloihin (ullakko, parvi, kellari). Ei saa olla varsinaisten asuintilojen uloskäytävän reitillä." },
@@ -22,7 +31,7 @@ const C = {
 const MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
-function computeFor(n, H, L) {
+function computeFor(n: number, H: number, L: number) {
   const risers = Math.max(2, n);
   const treads = risers - 1;
   const rise = H / risers;
@@ -30,9 +39,9 @@ function computeFor(n, H, L) {
   return { risers, treads, rise, going, blondel: 2 * rise + going };
 }
 
-function recommend(H, L, type) {
+function recommend(H: number, L: number, type: StairType) {
   if (H <= 0 || L <= 0) return 13;
-  let best = null, bestScore = Infinity;
+  let best: number | null = null, bestScore = Infinity;
   for (let n = 2; n <= 60; n++) {
     const { rise, going, blondel } = computeFor(n, H, L);
     let score = Math.abs(blondel - STEP_TARGET);
@@ -43,7 +52,16 @@ function recommend(H, L, type) {
   return best ?? 13;
 }
 
-function NumberField({ label, unit, value, onChange, min, step }) {
+type NumberFieldProps = {
+  label: string;
+  unit: string;
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  step?: number;
+};
+
+function NumberField({ label, unit, value, onChange, min, step }: NumberFieldProps) {
   return (
     <label style={{ display: "block" }}>
       <div style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: C.inkSoft, marginBottom: 6 }}>{label}</div>
@@ -56,7 +74,9 @@ function NumberField({ label, unit, value, onChange, min, step }) {
   );
 }
 
-function StairSection({ H, L, n, W }) {
+type StairSectionProps = { H: number; L: number; n: number; W: number };
+
+function StairSection({ H, L, n, W }: StairSectionProps) {
   const { rise, going, risers, treads } = computeFor(n, H, L);
   const theta = Math.atan2(H, L);
   const vt = W / Math.cos(theta);            // lankun pystykorkeus (pystypäätysahaus)
@@ -138,7 +158,7 @@ export default function PortaslaskuriApp() {
   const [n, setN] = useState(13);
   const [touchedN, setTouchedN] = useState(false);
 
-  const type = TYPES.find((t) => t.id === typeId);
+  const type = TYPES.find((t) => t.id === typeId) ?? TYPES[0];
   const rec = useMemo(() => recommend(H, L, type), [H, L, type]);
   useEffect(() => { setN(rec); setTouchedN(false); }, [rec]);
 
@@ -161,7 +181,7 @@ export default function PortaslaskuriApp() {
     ? comfortOk ? { c: C.pass, t: "Täyttää määräykset" } : { c: C.warn, t: "Täyttää raja-arvot — mukavuus rajalla" }
     : { c: C.fail, t: "Ei täytä määräyksiä" };
 
-  const stepN = (d) => { setN((v) => Math.max(2, v + d)); setTouchedN(true); };
+  const stepN = (d: number) => { setN((v) => Math.max(2, v + d)); setTouchedN(true); };
 
   return (
     <div style={{ background: C.paper, minHeight: "100vh", color: C.ink, fontFamily: SANS, padding: "20px 16px 48px",
@@ -248,9 +268,17 @@ export default function PortaslaskuriApp() {
   );
 }
 
-const stepBtn = { border: `1.5px solid ${C.ink}`, background: "#fff", color: C.ink, fontFamily: MONO, fontSize: 13, padding: "9px 14px", cursor: "pointer" };
+const stepBtn: CSSProperties = { border: `1.5px solid ${C.ink}`, background: "#fff", color: C.ink, fontFamily: MONO, fontSize: 13, padding: "9px 14px", cursor: "pointer" };
 
-function ResultCard({ label, value, ok, limit, advisory }) {
+type ResultCardProps = {
+  label: string;
+  value: string;
+  ok: boolean;
+  limit: string;
+  advisory?: boolean;
+};
+
+function ResultCard({ label, value, ok, limit, advisory }: ResultCardProps) {
   const col = ok ? (advisory ? C.warn : C.pass) : C.fail;
   return (
     <div style={{ border: `1.5px solid ${C.ink}`, background: "#fff", padding: "12px 14px" }}>
@@ -264,7 +292,14 @@ function ResultCard({ label, value, ok, limit, advisory }) {
   );
 }
 
-function Mini({ label, value, note, warn }) {
+type MiniProps = {
+  label: string;
+  value: string;
+  note: string;
+  warn?: boolean;
+};
+
+function Mini({ label, value, note, warn }: MiniProps) {
   return (
     <div>
       <div style={{ fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase", color: C.inkSoft, marginBottom: 5 }}>{label}</div>
