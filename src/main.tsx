@@ -1,10 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import PortaslaskuriApp from "./PortaslaskuriApp";
+import "./index.css";
 
-const reset = document.createElement("style");
-reset.textContent = "*{box-sizing:border-box;margin:0;padding:0}html,body,#root{height:100%}";
-document.head.appendChild(reset);
+// Kehityksessä StyleX tarjoaa tyylit virtuaalimoduulin kautta (CSS + HMR).
+// Tuotannossa tyylit liitetään index.css-assettiin buildin aikana.
+if (import.meta.env.DEV) {
+  import("virtual:stylex:runtime");
+}
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
