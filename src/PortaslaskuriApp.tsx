@@ -1,23 +1,21 @@
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { TYPES, STEP_MIN, STEP_MAX, MAX_RISERS_NO_LANDING } from "./config/stairTypes";
 import { computeFor, recommend, boardGeometry, evaluateCompliance } from "./lib/geometry";
 import { C, MONO, SANS, stepBtn } from "./theme";
+import { useStairParams } from "./useUrlState";
 import { NumberField } from "./components/NumberField";
 import { StairSection } from "./components/StairSection";
 import { ResultCard } from "./components/ResultCard";
 import { Mini } from "./components/Mini";
 
 export default function PortaslaskuriApp() {
-  const [H, setH] = useState(2300);
-  const [L, setL] = useState(3000);
-  const [W, setW] = useState(250);
-  const [typeId, setTypeId] = useState("asunto");
-  const [n, setN] = useState(13);
-  const [touchedN, setTouchedN] = useState(false);
+  const { H, L, W, typeId, nOverride, update } = useStairParams();
 
   const type = TYPES.find((t) => t.id === typeId) ?? TYPES[0];
   const rec = useMemo(() => recommend(H, L, type), [H, L, type]);
-  useEffect(() => { setN(rec); setTouchedN(false); }, [rec]);
+  // Ilman käsin asetettua arvoa nousumäärä seuraa suositusta joka renderissä.
+  const n = nOverride ?? rec;
+  const touchedN = nOverride != null;
 
   const r = computeFor(n, H, L);
   const { riseOk, goingOk, comfortOk, tooMany, allOk } = evaluateCompliance(r, type);
@@ -27,7 +25,7 @@ export default function PortaslaskuriApp() {
     ? comfortOk ? { c: C.pass, t: "Täyttää määräykset" } : { c: C.warn, t: "Täyttää raja-arvot — mukavuus rajalla" }
     : { c: C.fail, t: "Ei täytä määräyksiä" };
 
-  const stepN = (d: number) => { setN((v) => Math.max(2, v + d)); setTouchedN(true); };
+  const stepN = (d: number) => update({ n: Math.max(2, n + d) });
 
   return (
     <div style={{ background: C.paper, minHeight: "100vh", color: C.ink, fontFamily: SANS, padding: "20px 16px 48px",
@@ -39,14 +37,14 @@ export default function PortaslaskuriApp() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 14, marginBottom: 16 }}>
-          <NumberField label="Korkeus (y, x=0)" unit="mm" value={H} min={100} step={10} onChange={setH} />
-          <NumberField label="Lattiatila (x)" unit="mm" value={L} min={100} step={10} onChange={setL} />
-          <NumberField label="Reisilankun leveys" unit="mm" value={W} min={0} step={5} onChange={setW} />
+          <NumberField label="Korkeus (y, x=0)" unit="mm" value={H} min={100} step={10} onChange={(v) => update({ h: v, n: null })} />
+          <NumberField label="Lattiatila (x)" unit="mm" value={L} min={100} step={10} onChange={(v) => update({ l: v, n: null })} />
+          <NumberField label="Reisilankun leveys" unit="mm" value={W} min={0} step={5} onChange={(v) => update({ w: v })} />
         </div>
 
         <label style={{ display: "block", marginBottom: 20 }}>
           <div style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: C.inkSoft, marginBottom: 6 }}>Porrastyyppi</div>
-          <select value={typeId} onChange={(e) => setTypeId(e.target.value)}
+          <select value={typeId} onChange={(e) => update({ t: e.target.value, n: null })}
             style={{ width: "100%", border: `1.5px solid ${C.ink}`, background: "#fff", padding: "11px 12px", fontFamily: SANS, fontSize: 15, color: C.ink }}>
             {TYPES.map((t) => <option key={t.id} value={t.id}>{t.label}  ·  n ≤ {t.rise} / e ≥ {t.go} mm</option>)}
           </select>
@@ -61,7 +59,7 @@ export default function PortaslaskuriApp() {
           <div style={{ fontSize: 13, color: C.inkSoft }}>
             Nousuja (askelmia): <strong style={{ color: C.ink, fontFamily: MONO, fontSize: 16 }}>{r.risers}</strong>
             {touchedN && n !== rec && (
-              <button onClick={() => { setN(rec); setTouchedN(false); }} style={{ marginLeft: 10, border: "none", background: "none", color: C.line, fontSize: 12.5, textDecoration: "underline", cursor: "pointer", padding: 0 }}>palauta suositus ({rec})</button>
+              <button onClick={() => update({ n: null })} style={{ marginLeft: 10, border: "none", background: "none", color: C.line, fontSize: 12.5, textDecoration: "underline", cursor: "pointer", padding: 0 }}>palauta suositus ({rec})</button>
             )}
           </div>
           <div style={{ display: "flex", gap: 8 }}>
