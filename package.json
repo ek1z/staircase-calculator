@@ -6,23 +6,24 @@
   "description": "Interactive sizing tool for straight-flight staircases: computes step count, rise and going from floor-to-floor height and run, checks them against Finnish building-code limits (YM 1007/2017), and draws a live dimensioned section with the stringboard.",
   "packageManager": "pnpm@10.33.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check"
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.7",
     "@stylexjs/stylex": "^0.19.0",
+    "astro": "^6.4.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@stylexjs/unplugin": "^0.19.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.11"
+    "typescript": "^5.6.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

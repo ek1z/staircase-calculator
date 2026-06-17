@@ -50,15 +50,23 @@ building authority.
 
 The project uses the **pnpm** package manager (the version is pinned in the
 `packageManager` field of `package.json` and enabled via Corepack) and is written in
-**TypeScript** (React + Vite).
+**TypeScript**. It is built with **Astro** (static output) and renders the calculator
+as a client-side **React** island styled with **StyleX**.
 
 ```bash
 corepack enable   # enable the pinned pnpm version
 pnpm install      # install dependencies
-pnpm dev          # Vite dev server
-pnpm build        # type-check (tsc) + production build to dist/
-pnpm typecheck    # type-check only
+pnpm dev          # Astro dev server
+pnpm build        # static production build to dist/
+pnpm preview      # preview the production build
+pnpm typecheck    # astro check (type-check only)
 ```
+
+The page shell, `<head>` metadata and the JSON-LD structured data live in
+`src/layouts/Layout.astro`; `src/pages/index.astro` mounts the calculator
+(`src/PortaslaskuriApp.tsx`) with `client:only="react"` because the app keeps its full
+state in the URL query string. The site is published at a sub-path
+(`/staircase-calculator/`), configured via `base`/`site` in `astro.config.mjs`.
 
 ## Notes
 
